@@ -1,104 +1,97 @@
 
-<!doctype html>
+<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>校園場地預約系統</title>
 <style>
 :root {
-  font-family: system-ui, -apple-system, "Noto Sans TC", sans-serif;
-  color: #18263b;
-  background: #f5f7fb;
+  font-family: system-ui, "Noto Sans TC", sans-serif;
+  color: #1e293b;
+  background: #f3f6fb;
 }
 * { box-sizing: border-box; }
 body { margin: 0; }
+button, input, select { font: inherit; }
+button { cursor: pointer; }
 header {
-  background: #fff;
+  background: white;
   border-bottom: 1px solid #e2e8f0;
-  padding: 20px max(20px, calc((100vw - 1160px)/2));
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+  padding: 20px max(20px, calc((100vw - 1180px)/2));
 }
-h1 { font-size: 22px; margin: 0; }
-small, .muted { color: #64748b; }
-.shell { max-width: 1160px; margin: 28px auto; padding: 0 18px; }
+header h1 { margin: 0 0 4px; font-size: 23px; }
+header p { margin: 0; color: #64748b; font-size: 13px; }
+main { max-width: 1180px; margin: 25px auto; padding: 0 18px; }
 .panel {
   background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 16px;
   padding: 20px;
-  box-shadow: 0 3px 16px #18263b09;
+  border: 1px solid #e2e8f0;
+  border-radius: 15px;
+  box-shadow: 0 4px 18px #0f172a08;
 }
 .toolbar {
   display: flex;
   align-items: end;
-  gap: 12px;
   flex-wrap: wrap;
-  margin-bottom: 18px;
+  gap: 12px;
 }
 .field { display: grid; gap: 6px; }
-label { font-size: 13px; font-weight: 700; }
-select, input, button { font: inherit; }
-select, input {
-  border: 1px solid #cbd5e1;
-  border-radius: 9px;
+.field label { font-size: 13px; font-weight: 700; }
+input, select {
   padding: 10px;
-  background: white;
   min-height: 42px;
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  background: white;
+  width: 100%;
 }
 button {
+  padding: 10px 14px;
+  border-radius: 8px;
   border: 1px solid #cbd5e1;
   background: white;
-  border-radius: 9px;
-  padding: 10px 13px;
-  cursor: pointer;
 }
-button:hover { background: #f1f5f9; }
-button.active {
-  background: #1d4ed8;
+button:hover { background: #eff6ff; }
+button.primary, button.active {
   color: white;
-  border-color: #1d4ed8;
+  background: #2455d6;
+  border-color: #2455d6;
 }
-.group { display: flex; gap: 6px; align-items: center; }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.group { display: flex; gap: 6px; }
 .grow { flex: 1; }
-.status { font-size: 13px; margin: 10px 0 18px; min-height: 22px; }
-.error { color: #b91c1c; }
-.ok { color: #166534; }
-.calendar-title { font-weight: 800; font-size: 19px; margin: 0 0 15px; }
-.grid-wrap { overflow: auto; }
-.schedule {
+.status { font-size: 13px; margin: 15px 0; }
+.status.ok { color: #15803d; }
+.status.error { color: #b91c1c; }
+h2 { font-size: 19px; }
+.calendar-wrap { overflow-x: auto; }
+table {
+  border-collapse: collapse;
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
   min-width: 720px;
   table-layout: fixed;
 }
-.schedule th, .schedule td {
-  border-right: 1px solid #e2e8f0;
-  border-bottom: 1px solid #e2e8f0;
+th, td {
+  border: 1px solid #e2e8f0;
   padding: 9px;
   vertical-align: top;
 }
-.schedule tr > *:first-child { border-left: 1px solid #e2e8f0; }
-.schedule thead tr:first-child > * { border-top: 1px solid #e2e8f0; }
-.schedule th { background: #f8fafc; text-align: center; font-size: 13px; }
-.schedule .period { width: 120px; font-size: 12px; background: #f8fafc; }
-.schedule td { height: 75px; }
+th { background: #f8fafc; font-size: 13px; }
+td { height: 72px; }
+.period { width: 115px; }
+.period small { color: #64748b; font-weight: 400; }
 .booking {
-  border-radius: 8px;
-  padding: 8px;
-  margin-bottom: 5px;
-  background: #dbeafe;
-  border-left: 3px solid #2563eb;
-  font-size: 12px;
-  text-align: left;
-  width: 100%;
   display: block;
-  color: #1e3a8a;
+  width: 100%;
+  padding: 7px;
+  margin-bottom: 5px;
+  text-align: left;
+  font-size: 12px;
+  background: #dbeafe;
+  border: 0;
+  border-left: 4px solid #2563eb;
+  color: #1e40af;
   overflow-wrap: anywhere;
 }
 .booking.pending {
@@ -106,484 +99,508 @@ button.active {
   border-color: #d97706;
   color: #92400e;
 }
-.booking strong { display: block; font-size: 13px; }
-.booking span { display: block; margin-top: 3px; }
-.legend { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 14px; font-size: 13px; }
+.booking strong, .booking span { display: block; }
+.legend { display: flex; gap: 16px; margin-top: 15px; font-size: 13px; }
 .dot {
   display: inline-block;
   width: 10px;
   height: 10px;
-  border-radius: 3px;
-  margin-right: 6px;
+  margin-right: 5px;
   background: #2563eb;
 }
 .dot.pending { background: #d97706; }
-.month-grid {
+.month {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0,1fr));
-  border-left: 1px solid #e2e8f0;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   border-top: 1px solid #e2e8f0;
+  border-left: 1px solid #e2e8f0;
 }
-.month-head, .month-day {
+.month > div {
   border-right: 1px solid #e2e8f0;
   border-bottom: 1px solid #e2e8f0;
-  padding: 7px;
+  padding: 6px;
   min-width: 0;
 }
-.month-head { background: #f8fafc; text-align: center; font-size: 12px; font-weight: 700; }
-.month-day { min-height: 115px; }
+.month-head { text-align: center; background: #f8fafc; font-size: 12px; }
+.month-day { min-height: 110px; }
 .month-day.outside { background: #f8fafc; color: #94a3b8; }
-.month-day .date { font-size: 12px; font-weight: 700; margin-bottom: 5px; }
 .month-day .booking { font-size: 11px; padding: 5px; }
-.month-day .booking strong { font-size: 11px; }
-.empty { text-align: center; padding: 45px 10px; color: #64748b; }
 dialog {
   border: 0;
-  border-radius: 15px;
-  box-shadow: 0 18px 65px #0004;
-  max-width: min(440px,90vw);
-  width: 100%;
-  padding: 25px;
+  border-radius: 16px;
+  padding: 24px;
+  width: min(540px, 94vw);
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 70px #0004;
 }
-dialog::backdrop { background: #0f172a77; }
-dialog h2 { margin-top: 0; font-size: 20px; }
-dialog dl { display: grid; grid-template-columns: 90px 1fr; gap: 12px; font-size: 14px; }
-dialog dt { color: #64748b; }
-dialog dd { margin: 0; overflow-wrap: anywhere; }
-.close { float: right; }
-footer { margin: 20px 0; text-align: center; color: #64748b; font-size: 12px; }
+dialog::backdrop { background: #0f172a99; }
+.dialog-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.dialog-head h2 { margin: 0; }
+.form-grid { display: grid; gap: 15px; margin-top: 20px; }
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.period-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+.period-option {
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+  padding: 9px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.period-option:has(input:checked) {
+  background: #dbeafe;
+  border-color: #2563eb;
+}
+.period-option input { width: auto; min-height: 0; margin-right: 4px; }
+.period-option small { display: block; margin-top: 4px; color: #64748b; }
+.actions { display: flex; justify-content: end; gap: 8px; margin-top: 20px; }
+.note { font-size: 12px; color: #64748b; line-height: 1.6; }
+.result { margin-top: 14px; font-size: 13px; white-space: pre-wrap; overflow-wrap: anywhere; }
+.result.error { color: #b91c1c; }
+.result.ok { color: #166534; }
+.detail-list { display: grid; grid-template-columns: 90px 1fr; gap: 12px; font-size: 14px; }
+.detail-list dt { color: #64748b; }
+.detail-list dd { margin: 0; overflow-wrap: anywhere; }
+footer { text-align: center; color: #64748b; font-size: 12px; padding: 20px; }
 @media(max-width:650px) {
   header { padding: 16px; }
-  h1 { font-size: 19px; }
-  .shell { margin: 16px auto; }
+  main { margin: 14px auto; padding: 0 10px; }
   .panel { padding: 12px; }
-  .toolbar { gap: 9px; }
-  .field { width: 100%; }
-  .field select { width: 100%; }
-  .month-day { min-height: 82px; padding: 3px; }
-  .month-day .booking { font-size: 10px; padding: 3px; }
+  .toolbar > .field { width: 100%; }
+  .period-list { grid-template-columns: repeat(2, 1fr); }
+  .month-day { min-height: 75px; padding: 3px !important; }
   .month-day .booking span { display: none; }
-  .month-day .booking strong { font-size: 10px; }
-  .month-head { padding: 5px 2px; }
+  .month-day .booking { font-size: 10px; }
 }
 </style>
 </head>
 <body>
+
 <header>
-  <div>
-    <h1>校園場地預約系統</h1>
-    <small id="school">場地借用公開總覽</small>
-  </div>
-  <div class="muted" style="font-size:13px">
-    預約資訊以學校審核紀錄為準
-  </div>
+  <h1>校園場地預約系統</h1>
+  <p id="school">場地借用及線上預約</p>
 </header>
 
-<main class="shell">
-  <section class="panel">
-    <div class="toolbar">
-      <div class="field">
-        <label for="venue">場地</label>
-        <select id="venue">
-          <option value="">載入場地中…</option>
-        </select>
-      </div>
-      <div class="field">
-        <label for="date">參考日期</label>
-        <input type="date" id="date">
-      </div>
-      <div class="group">
-        <button id="prev" aria-label="上一個期間">‹</button>
-        <button id="today">今天</button>
-        <button id="next" aria-label="下一個期間">›</button>
-      </div>
-      <div class="grow"></div>
-      <div class="group" aria-label="檢視模式">
-        <button data-view="day">日</button>
-        <button data-view="week" class="active">週</button>
-        <button data-view="month">月</button>
-      </div>
+<main>
+<section class="panel">
+  <div class="toolbar">
+    <div class="field">
+      <label for="venue">場地</label>
+      <select id="venue"></select>
     </div>
-
-    <p class="status" id="status" role="status" aria-live="polite">
-      正在連線…
-    </p>
-    <h2 class="calendar-title" id="calendarTitle"></h2>
-    <div id="calendar"></div>
-
-    <div class="legend">
-      <span><i class="dot"></i>已核准 APPROVED</span>
-      <span><i class="dot pending"></i>待審核 PENDING</span>
+    <div class="field">
+      <label for="date">參考日期</label>
+      <input type="date" id="date">
     </div>
-  </section>
+    <div class="group">
+      <button id="prev">‹</button>
+      <button id="today">今天</button>
+      <button id="next">›</button>
+    </div>
+    <div class="grow"></div>
+    <div class="group">
+      <button data-view="day">日</button>
+      <button data-view="week" class="active">週</button>
+      <button data-view="month">月</button>
+    </div>
+    <button class="primary" id="openBooking">＋ 預約場地</button>
+  </div>
 
-  <footer>
-    此頁僅提供公開預約查詢，尚未開放線上申請及審核。
-  </footer>
+  <p class="status" id="status" role="status">載入中…</p>
+  <h2 id="calendarTitle"></h2>
+  <div id="calendar"></div>
+  <div class="legend">
+    <span><i class="dot"></i>已核准</span>
+    <span><i class="dot pending"></i>待審核</span>
+  </div>
+</section>
 </main>
 
-<dialog id="details">
-  <button class="close" id="close" aria-label="關閉">✕</button>
-  <h2>預約詳細資訊</h2>
-  <dl id="detailList"></dl>
+<footer>預約送出後須經管理員核准，才算正式借用成功。</footer>
+
+<dialog id="bookingDialog">
+  <div class="dialog-head">
+    <h2>新增場地預約</h2>
+    <button type="button" id="closeBooking">✕</button>
+  </div>
+
+  <form id="bookingForm" class="form-grid">
+    <div class="field">
+      <label for="formVenue">借用場地</label>
+      <select id="formVenue" required></select>
+    </div>
+
+    <div class="two">
+      <div class="field">
+        <label for="formName">借用人姓名</label>
+        <input id="formName" maxlength="50" required>
+      </div>
+      <div class="field">
+        <label for="formUnit">單位／處室</label>
+        <input id="formUnit" maxlength="80" required>
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="formActivity">活動名稱</label>
+      <input id="formActivity" maxlength="100" required>
+    </div>
+
+    <div class="field">
+      <label for="formDate">借用日期</label>
+      <input type="date" id="formDate" required>
+    </div>
+
+    <div class="field">
+      <label>借用節次（可複選）</label>
+      <div class="period-list" id="periodList"></div>
+    </div>
+
+    <div class="field">
+      <label for="repeatType">預約類型</label>
+      <select id="repeatType">
+        <option value="single">單次預約</option>
+        <option value="weekly">每週重複預約</option>
+      </select>
+    </div>
+
+    <div id="repeatFields" hidden>
+      <div class="field">
+        <label for="repeatEnd">重複結束日期</label>
+        <input type="date" id="repeatEnd">
+      </div>
+      <p class="note">
+        每週重複預約會依照借用日期的星期，自動建立每週相同節次的申請，
+        最多 52 個日期。
+      </p>
+    </div>
+
+    <p class="note">
+      送出後會先進入「待審核」狀態。
+      待審核與已核准的時段都會阻擋其他預約。
+      借用人姓名、單位與活動名稱將公開顯示在借用總覽。
+    </p>
+
+    <div class="result" id="submitResult" role="status"></div>
+
+    <div class="actions">
+      <button type="button" id="cancelBooking">取消</button>
+      <button type="submit" class="primary" id="submitBooking">
+        送出預約申請
+      </button>
+    </div>
+  </form>
+</dialog>
+
+<dialog id="detailDialog">
+  <div class="dialog-head">
+    <h2>預約詳細資訊</h2>
+    <button id="closeDetail">✕</button>
+  </div>
+  <dl class="detail-list" id="detailList"></dl>
 </dialog>
 
 <script>
 'use strict';
 
 const API =
-  'https://script.google.com/macros/s/AKfycbywjP6rjE0daEuPoInFkTqiL0RceTHU2FdriGifxhtPogGEQ2TAhmtIE52gB4BzJNZ2SQ/exec';
+'https://script.google.com/macros/s/AKfycbwniq1x6-SlB0qt9OhbLNTJ386H6EWW6Niz27wtoVdKTWuuXBVErYZ57bF4vKjiIld4XA/exec';
+
+// 正式開放前先保持 false
+const ENABLE_BOOKING_SUBMISSION = false;
 
 const $ = id => document.getElementById(id);
+const pad = n => String(n).padStart(2, '0');
+const fmt = d =>
+  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
+const parse = s => new Date(s + 'T12:00:00');
+const addDays = (d, n) => {
+  const x = new Date(d);
+  x.setDate(x.getDate() + n);
+  return x;
+};
+const monday = d => addDays(d, -((d.getDay()+6)%7));
+const firstOfMonth = d =>
+  new Date(d.getFullYear(), d.getMonth(), 1, 12);
+const lastOfMonth = d =>
+  new Date(d.getFullYear(), d.getMonth()+1, 0, 12);
 
 const state = {
   venues: [],
   periods: [],
   bookings: [],
-  view: 'week',
-  date: new Date(),
+  date: parse(fmt(new Date())),
   venue: '',
-  request: 0
+  view: 'week',
+  sequence: 0,
+  submitting: false
 };
 
-const pad = n => String(n).padStart(2, '0');
-
-const fmt = d =>
-  `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`;
-
-const parse = s => new Date(`${s}T12:00:00`);
-
-const add = (d, n) => {
-  const x = new Date(d);
-  x.setDate(x.getDate() + n);
-  return x;
-};
-
-const monday = d => add(d, -((d.getDay()+6)%7));
-
-const monthStart = d =>
-  new Date(d.getFullYear(), d.getMonth(), 1, 12);
-
-const monthEnd = d =>
-  new Date(d.getFullYear(), d.getMonth()+1, 0, 12);
-
-const display = d =>
-  `${d.getMonth()+1}/${d.getDate()}`;
-
-const escapeHtml = s =>
-  String(s ?? '').replace(/[&<>"']/g, c => ({
-    '&':'&amp;',
-    '<':'&lt;',
-    '>':'&gt;',
-    '"':'&quot;',
-    "'":'&#39;'
-  }[c]));
-
-function status(msg, cls='') {
-  $('status').textContent = msg;
-  $('status').className = 'status ' + cls;
+function setStatus(message, type='') {
+  $('status').textContent = message;
+  $('status').className = 'status ' + type;
 }
 
-// GAS ContentService 跨網域公開讀取使用 JSONP。
-// 只載入固定且可信任的 GAS 端點。
-function api(params) {
+function setResult(message, type='') {
+  $('submitResult').textContent = message;
+  $('submitResult').className = 'result ' + type;
+}
+
+function escapeHtml(value) {
+  return String(value ?? '').replace(/[&<>"']/g, c => ({
+    '&':'&amp;', '<':'&lt;', '>':'&gt;',
+    '"':'&quot;', "'":'&#39;'
+  }[c]));
+}
+
+// 公開讀取：GAS JSONP
+function apiGet(params) {
   return new Promise((resolve, reject) => {
-    const callback =
-      'venueCb_' + Date.now() + '_' +
+    const cb = 'venue_' + Date.now() + '_' +
       Math.random().toString(36).slice(2);
 
     const script = document.createElement('script');
-    let done = false;
+    let finished = false;
 
-    const timer = setTimeout(
-      () => finish(new Error('連線逾時，請檢查 GAS 部署與權限')),
-      12000
-    );
+    const timer = setTimeout(() =>
+      finish(new Error('API 連線逾時')), 15000);
 
     function finish(err, data) {
-      if (done) return;
-      done = true;
+      if (finished) return;
+      finished = true;
       clearTimeout(timer);
-      delete window[callback];
+      delete window[cb];
       script.remove();
       err ? reject(err) : resolve(data);
     }
 
-    window[callback] = data => finish(null, data);
-
+    window[cb] = data => finish(null, data);
     script.onerror = () =>
-      finish(new Error('無法載入 API，請確認網址及公開權限'));
+      finish(new Error('API 讀取失敗'));
 
-    script.src =
-      API + '?' +
-      new URLSearchParams({...params, callback}).toString();
+    script.src = API + '?' +
+      new URLSearchParams({...params, callback:cb});
 
     document.head.append(script);
   });
 }
 
-function range() {
+function getRange() {
   const d = state.date;
-
-  if (state.view === 'day') return [d, d];
-
+  if (state.view === 'day') return [d,d];
   if (state.view === 'week') {
     const s = monday(d);
-    return [s, add(s, 6)];
+    return [s,addDays(s,6)];
   }
+  return [firstOfMonth(d),lastOfMonth(d)];
+}
 
-  return [monthStart(d), monthEnd(d)];
+function syncControls() {
+  $('date').value = fmt(state.date);
+  document.querySelectorAll('[data-view]').forEach(b => {
+    b.classList.toggle('active', b.dataset.view === state.view);
+  });
 }
 
 function shift(n) {
-  const d = state.date;
-
   if (state.view === 'day') {
-    state.date = add(d, n);
+    state.date = addDays(state.date,n);
   } else if (state.view === 'week') {
-    state.date = add(d, n * 7);
+    state.date = addDays(state.date,n*7);
   } else {
-    const day = d.getDate();
-    const x = new Date(d.getFullYear(), d.getMonth()+n, 1, 12);
-    x.setDate(Math.min(day, monthEnd(x).getDate()));
+    const d = state.date;
+    const x = new Date(d.getFullYear(),d.getMonth()+n,1,12);
+    x.setDate(Math.min(d.getDate(),lastOfMonth(x).getDate()));
     state.date = x;
   }
-
-  syncDate();
+  syncControls();
   loadBookings();
 }
 
-function syncDate() {
-  $('date').value = fmt(state.date);
-
-  document.querySelectorAll('[data-view]').forEach(b =>
-    b.classList.toggle('active', b.dataset.view === state.view)
-  );
-}
-
 async function init() {
-  state.date = parse(fmt(new Date()));
-  syncDate();
-
+  syncControls();
   try {
-    const d = await api({action:'getInitialData'});
+    const data = await apiGet({action:'getInitialData'});
+    if (!data.success) throw Error(data.message || '讀取失敗');
 
-    if (!d.success) {
-      throw Error(d.message || '初始資料讀取失敗');
-    }
+    state.venues = data.venues || [];
+    state.periods = data.periods || [];
+    $('school').textContent = data.school_name || '場地借用總覽';
 
-    state.venues = d.venues || [];
-    state.periods = d.periods || [];
-
-    $('school').textContent =
-      d.school_name || '場地借用公開總覽';
-
-    $('venue').replaceChildren();
-
-    for (const v of state.venues) {
-      const o = document.createElement('option');
-      o.value = v.venue_id;
-      o.textContent = v.venue_name;
-      $('venue').append(o);
+    for (const id of ['venue','formVenue']) {
+      const select = $(id);
+      select.replaceChildren();
+      state.venues.forEach(v => {
+        const opt = document.createElement('option');
+        opt.value = v.venue_id;
+        opt.textContent = v.venue_name;
+        select.append(opt);
+      });
     }
 
     if (!state.venues.length) {
-      status('目前沒有啟用的場地', 'error');
+      setStatus('目前沒有可使用的場地','error');
       return;
     }
 
     state.venue = state.venues[0].venue_id;
+    buildPeriodOptions();
     await loadBookings();
 
-  } catch (e) {
-    status('連線失敗：' + e.message, 'error');
-    $('calendar').innerHTML =
-      '<p class="empty">請檢查 GAS 部署版本、資料庫權限及網路連線。</p>';
+  } catch (err) {
+    setStatus('連線失敗：'+err.message,'error');
   }
 }
 
 async function loadBookings() {
-  const token = ++state.request;
-  const [start, end] = range();
+  const seq = ++state.sequence;
+  const [start,end] = getRange();
 
-  const label = state.view === 'month'
-    ? `${start.getFullYear()} 年 ${start.getMonth()+1} 月`
-    : state.view === 'day'
-      ? fmt(start)
+  $('calendarTitle').textContent =
+    state.view === 'month'
+      ? `${start.getFullYear()} 年 ${start.getMonth()+1} 月`
       : `${fmt(start)} ～ ${fmt(end)}`;
 
-  $('calendarTitle').textContent = label;
-  status('讀取預約資料中…');
-  $('calendar').innerHTML = '';
+  setStatus('正在讀取預約資料…');
+  $('calendar').replaceChildren();
 
   try {
-    const d = await api({
-      action: 'getBookings',
-      start: fmt(start),
-      end: fmt(end),
-      venue_id: state.venue
+    const data = await apiGet({
+      action:'getBookings',
+      start:fmt(start),
+      end:fmt(end),
+      venue_id:state.venue
     });
 
-    if (token !== state.request) return;
+    if (seq !== state.sequence) return;
+    if (!data.success) throw Error(data.message || '讀取失敗');
 
-    if (!d.success) {
-      throw Error(d.message || '查詢失敗');
-    }
+    state.bookings = data.bookings || [];
+    renderCalendar();
+    setStatus(`資料已更新，共 ${state.bookings.length} 筆預約紀錄`,'ok');
 
-    state.bookings = d.bookings || [];
-    render();
-
-    status(
-      `資料已更新，共 ${state.bookings.length} 筆預約紀錄`,
-      'ok'
-    );
-
-  } catch (e) {
-    if (token !== state.request) return;
-
-    status('讀取失敗：' + e.message, 'error');
-    $('calendar').innerHTML =
-      '<p class="empty">無法顯示預約資料，請稍後再試。</p>';
+  } catch(err) {
+    if (seq !== state.sequence) return;
+    setStatus('預約資料讀取失敗：'+err.message,'error');
   }
 }
 
-function bookButton(b) {
-  const el = document.createElement('button');
+function bookingButton(b) {
+  const btn = document.createElement('button');
+  btn.className = 'booking' +
+    (b.status === 'PENDING' ? ' pending' : '');
 
-  el.className =
-    'booking' + (b.status === 'PENDING' ? ' pending' : '');
+  const strong = document.createElement('strong');
+  strong.textContent = b.activity_name;
+  const span = document.createElement('span');
+  span.textContent = `${b.borrower_unit}｜${b.borrower_name}`;
 
-  const title = document.createElement('strong');
-  title.textContent = b.activity_name || '未命名活動';
-
-  const sub = document.createElement('span');
-  sub.textContent =
-    `${b.borrower_unit || ''}｜${b.borrower_name || ''}`;
-
-  el.append(title, sub);
-  el.title = `${b.activity_name} — ${b.borrower_name}`;
-
-  el.addEventListener('click', () => showDetails(b));
-
-  return el;
+  btn.append(strong,span);
+  btn.addEventListener('click',()=>showDetails(b));
+  return btn;
 }
 
-function render() {
-  if (state.view === 'month') {
-    renderMonth();
-  } else {
-    renderTable();
-  }
+function renderCalendar() {
+  if (state.view === 'month') renderMonth();
+  else renderTable();
 }
 
 function renderTable() {
-  const [start, end] = range();
-  const days = [];
-
-  for (let d = start; d <= end; d = add(d, 1)) {
-    days.push(fmt(d));
-  }
+  const [start,end] = getRange();
+  const dates = [];
+  for (let d=start;d<=end;d=addDays(d,1)) dates.push(fmt(d));
 
   const wrap = document.createElement('div');
-  wrap.className = 'grid-wrap';
-
+  wrap.className = 'calendar-wrap';
   const table = document.createElement('table');
-  table.className = 'schedule';
 
-  const thead = document.createElement('thead');
-  const tr = document.createElement('tr');
+  const head = document.createElement('thead');
+  const hr = document.createElement('tr');
+  const corner = document.createElement('th');
+  corner.className = 'period';
+  corner.textContent = '節次／時間';
+  hr.append(corner);
 
-  const first = document.createElement('th');
-  first.className = 'period';
-  first.textContent = '節次 / 時間';
-  tr.append(first);
-
-  for (const day of days) {
+  dates.forEach(date => {
     const th = document.createElement('th');
+    const d = parse(date);
     th.textContent =
-      `${display(parse(day))}（${'日一二三四五六'[parse(day).getDay()]}）`;
-    tr.append(th);
-  }
+      `${d.getMonth()+1}/${d.getDate()}（${'日一二三四五六'[d.getDay()]}）`;
+    hr.append(th);
+  });
+  head.append(hr);
+  table.append(head);
 
-  thead.append(tr);
-  table.append(thead);
+  const body = document.createElement('tbody');
 
-  const tbody = document.createElement('tbody');
-
-  for (const p of state.periods) {
-    const row = document.createElement('tr');
-
+  state.periods.forEach(p => {
+    const tr = document.createElement('tr');
     const th = document.createElement('th');
     th.className = 'period';
     th.innerHTML =
-      `${escapeHtml(p.period_name)}<br>` +
-      `<small>${escapeHtml(p.start_time)}–${escapeHtml(p.end_time)}</small>`;
+      escapeHtml(p.period_name) +
+      '<br><small>' +
+      escapeHtml(p.start_time) + '–' +
+      escapeHtml(p.end_time) + '</small>';
+    tr.append(th);
 
-    row.append(th);
-
-    for (const day of days) {
+    dates.forEach(date => {
       const td = document.createElement('td');
+      state.bookings
+        .filter(b =>
+          b.booking_date === date &&
+          b.period_ids.includes(p.period_id))
+        .forEach(b => td.append(bookingButton(b)));
+      tr.append(td);
+    });
 
-      const matches = state.bookings.filter(b =>
-        b.booking_date === day &&
-        (b.period_ids || []).includes(p.period_id)
-      );
+    body.append(tr);
+  });
 
-      for (const b of matches) {
-        td.append(bookButton(b));
-      }
-
-      row.append(td);
-    }
-
-    tbody.append(row);
-  }
-
-  table.append(tbody);
+  table.append(body);
   wrap.append(table);
-
   $('calendar').replaceChildren(wrap);
 }
 
 function renderMonth() {
-  const start = monthStart(state.date);
-  const end = monthEnd(state.date);
+  const start = firstOfMonth(state.date);
+  const end = lastOfMonth(state.date);
   const first = monday(start);
-  const last = add(monday(end), 6);
+  const last = addDays(monday(end),6);
 
   const grid = document.createElement('div');
-  grid.className = 'month-grid';
+  grid.className = 'month';
 
-  for (const name of ['一','二','三','四','五','六','日']) {
+  '一二三四五六日'.split('').forEach(n => {
     const h = document.createElement('div');
     h.className = 'month-head';
-    h.textContent = '星期' + name;
+    h.textContent = '星期'+n;
     grid.append(h);
-  }
+  });
 
-  for (let d = first; d <= last; d = add(d, 1)) {
-    const day = fmt(d);
-
+  for(let d=first;d<=last;d=addDays(d,1)) {
     const cell = document.createElement('div');
-    cell.className =
-      'month-day' +
-      (d.getMonth() !== start.getMonth() ? ' outside' : '');
+    cell.className = 'month-day' +
+      (d.getMonth()!==start.getMonth()?' outside':'');
 
-    const label = document.createElement('div');
-    label.className = 'date';
+    const label = document.createElement('strong');
     label.textContent = d.getDate();
     cell.append(label);
 
-    if (d.getMonth() === start.getMonth()) {
-      const entries = state.bookings.filter(b =>
-        b.booking_date === day
-      );
-
-      for (const b of entries) {
-        cell.append(bookButton(b));
-      }
+    if(d.getMonth()===start.getMonth()) {
+      state.bookings
+        .filter(b=>b.booking_date===fmt(d))
+        .forEach(b=>cell.append(bookingButton(b)));
     }
-
     grid.append(cell);
   }
 
@@ -591,75 +608,244 @@ function renderMonth() {
 }
 
 function showDetails(b) {
-  const venue =
-    state.venues.find(v => v.venue_id === b.venue_id)
-      ?.venue_name || b.venue_id;
-
-  const times = (b.period_ids || [])
-    .map(id =>
-      state.periods.find(p => p.period_id === id)
-        ?.period_name || id
-    )
-    .join('、');
+  const venue = state.venues.find(v=>v.venue_id===b.venue_id);
+  const periods = b.period_ids.map(id=>
+    state.periods.find(p=>p.period_id===id)?.period_name || id
+  ).join('、');
 
   const fields = [
-    ['場地', venue],
-    ['日期', b.booking_date],
-    ['節次', times],
-    ['活動名稱', b.activity_name],
-    ['借用人', b.borrower_name],
-    ['單位', b.borrower_unit],
-    ['狀態', b.status === 'PENDING' ? '待審核' : '已核准']
+    ['場地',venue?.venue_name || b.venue_id],
+    ['日期',b.booking_date],
+    ['節次',periods],
+    ['活動',b.activity_name],
+    ['借用人',b.borrower_name],
+    ['單位',b.borrower_unit],
+    ['狀態',b.status==='PENDING'?'待審核':'已核准']
   ];
 
   const dl = $('detailList');
   dl.replaceChildren();
 
-  for (const [key, value] of fields) {
-    const dt = document.createElement('dt');
-    const dd = document.createElement('dd');
+  fields.forEach(([k,v])=>{
+    const dt=document.createElement('dt');
+    const dd=document.createElement('dd');
+    dt.textContent=k;
+    dd.textContent=v;
+    dl.append(dt,dd);
+  });
 
-    dt.textContent = key;
-    dd.textContent = value || '—';
-
-    dl.append(dt, dd);
-  }
-
-  $('details').showModal();
+  $('detailDialog').showModal();
 }
 
-$('venue').addEventListener('change', e => {
-  state.venue = e.target.value;
+function buildPeriodOptions() {
+  const container = $('periodList');
+  container.replaceChildren();
+
+  state.periods.forEach(p => {
+    const label = document.createElement('label');
+    label.className = 'period-option';
+
+    const input = document.createElement('input');
+    input.type = 'checkbox';
+    input.name = 'period';
+    input.value = p.period_id;
+
+    const title = document.createTextNode(p.period_name);
+    const time = document.createElement('small');
+    time.textContent = `${p.start_time}–${p.end_time}`;
+
+    label.append(input,title,time);
+    container.append(label);
+  });
+}
+
+function openBookingDialog() {
+  $('bookingForm').reset();
+  $('formVenue').value = state.venue;
+  $('formDate').value = fmt(state.date);
+  $('formDate').min = fmt(new Date());
+  $('repeatEnd').min = fmt(new Date());
+  $('repeatFields').hidden = true;
+  setResult('');
+
+  $('submitBooking').disabled = !ENABLE_BOOKING_SUBMISSION;
+
+  if (!ENABLE_BOOKING_SUBMISSION) {
+    setResult(
+      '目前為預約表單測試模式。請先完成後端寫入驗證及安全檢查，再啟用送出。',
+      'error'
+    );
+  }
+
+  $('bookingDialog').showModal();
+}
+
+function selectedPeriods() {
+  return [...document.querySelectorAll(
+    'input[name="period"]:checked'
+  )].map(x=>x.value);
+}
+
+function buildRequest() {
+  const date = $('formDate').value;
+  const periodIds = selectedPeriods();
+
+  if (!periodIds.length) {
+    throw Error('請至少選擇一個節次');
+  }
+
+  if (date < fmt(new Date())) {
+    throw Error('不可預約過去的日期');
+  }
+
+  const data = {
+    venue_id: $('formVenue').value,
+    date,
+    period_ids: periodIds,
+    borrower_name: $('formName').value.trim(),
+    borrower_unit: $('formUnit').value.trim(),
+    activity_name: $('formActivity').value.trim(),
+    request_id: crypto.randomUUID()
+  };
+
+  if ($('repeatType').value === 'weekly') {
+    const end = $('repeatEnd').value;
+
+    if (!end || end < date) {
+      throw Error('請選擇正確的重複結束日期');
+    }
+
+    data.repeat = {
+      type:'weekly',
+      start_date:date,
+      end_date:end,
+      weekdays:[parse(date).getDay()]
+    };
+  }
+
+  return data;
+}
+
+function sleep(ms) {
+  return new Promise(resolve=>setTimeout(resolve,ms));
+}
+
+// GAS ContentService 無法在 GitHub Pages 直接設定 CORS。
+// 使用 no-cors POST 後，必須再查詢 request_id 確認結果。
+async function sendRequest(data) {
+  await fetch(API, {
+    method:'POST',
+    mode:'no-cors',
+    body:JSON.stringify({
+      action:'createBooking',
+      data
+    })
+  });
+
+  for(let attempt=0;attempt<8;attempt++) {
+    await sleep(1500);
+
+    const result = await apiGet({
+      action:'getRequestStatus',
+      request_id:data.request_id
+    });
+
+    if (!result.success) {
+      throw Error(result.message || '查詢申請失敗');
+    }
+
+    if (result.found) return result;
+  }
+
+  throw Error(
+    '尚未確認申請是否寫入。請保留申請識別碼，勿立即重複送出。'
+  );
+}
+
+async function submitBooking(event) {
+  event.preventDefault();
+  if (state.submitting) return;
+
+  if (!ENABLE_BOOKING_SUBMISSION) {
+    setResult('目前尚未開放正式送出。','error');
+    return;
+  }
+
+  let data;
+
+  try {
+    data = buildRequest();
+  } catch(err) {
+    setResult(err.message,'error');
+    return;
+  }
+
+  state.submitting = true;
+  $('submitBooking').disabled = true;
+  $('cancelBooking').disabled = true;
+
+  setResult(
+    '正在送出並確認資料庫寫入…\n申請識別碼：'+data.request_id
+  );
+
+  try {
+    const result = await sendRequest(data);
+
+    setResult(
+      '申請已成功寫入！\n' +
+      '狀態：待審核\n' +
+      '申請查詢碼：'+result.group_id+'\n' +
+      '共建立 '+result.count+' 筆日期紀錄。',
+      'ok'
+    );
+
+    await loadBookings();
+
+  } catch(err) {
+    setResult(
+      '無法確認申請結果：'+err.message+'\n' +
+      '申請識別碼：'+data.request_id,
+      'error'
+    );
+  } finally {
+    state.submitting = false;
+    $('submitBooking').disabled = false;
+    $('cancelBooking').disabled = false;
+  }
+}
+
+$('venue').addEventListener('change',e=>{
+  state.venue=e.target.value;
   loadBookings();
 });
-
-$('date').addEventListener('change', e => {
-  if (e.target.value) {
-    state.date = parse(e.target.value);
+$('date').addEventListener('change',e=>{
+  if(e.target.value) {
+    state.date=parse(e.target.value);
     loadBookings();
   }
 });
-
-$('prev').addEventListener('click', () => shift(-1));
-$('next').addEventListener('click', () => shift(1));
-
-$('today').addEventListener('click', () => {
-  state.date = parse(fmt(new Date()));
-  syncDate();
+$('prev').addEventListener('click',()=>shift(-1));
+$('next').addEventListener('click',()=>shift(1));
+$('today').addEventListener('click',()=>{
+  state.date=parse(fmt(new Date()));
+  syncControls();
   loadBookings();
 });
-
-document.querySelectorAll('[data-view]').forEach(b =>
-  b.addEventListener('click', () => {
-    state.view = b.dataset.view;
-    syncDate();
+document.querySelectorAll('[data-view]').forEach(b=>{
+  b.addEventListener('click',()=>{
+    state.view=b.dataset.view;
+    syncControls();
     loadBookings();
-  })
-);
-
-$('close').addEventListener('click', () =>
-  $('details').close()
-);
+  });
+});
+$('openBooking').addEventListener('click',openBookingDialog);
+$('closeBooking').addEventListener('click',()=>$('bookingDialog').close());
+$('cancelBooking').addEventListener('click',()=>$('bookingDialog').close());
+$('closeDetail').addEventListener('click',()=>$('detailDialog').close());
+$('repeatType').addEventListener('change',e=>{
+  $('repeatFields').hidden=e.target.value!=='weekly';
+});
+$('bookingForm').addEventListener('submit',submitBooking);
 
 init();
 </script>
